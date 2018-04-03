@@ -22,8 +22,8 @@ public class ScannerDemo {
             Scanner s = new Scanner(buffIn);) {
 
             double sum = 0.0d;
-            s.useLocale(Locale.US);
-            //s.useLocale(Locale.GERMAN);
+            //s.useLocale(Locale.US);
+            s.useLocale(Locale.GERMAN);
             while(s.hasNext()) {
                 if(s.hasNextDouble()) {
                     double next = s.nextDouble();

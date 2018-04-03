@@ -37,10 +37,57 @@ interleave. Even there is a single statement in an operation, the statement may
 generate several steps in JVM, which can cause thread interference.
 
 ## Memory Consistency Errors
+Based on my current understanding, memory consistency errors are similar to
+thread interference. The difference is that, instead of thread A and thread B
+executed at the same time, one, let's say A, executed first, updated the memory.
+But B didn't read the latest value. Instead, it keeps an old value.
 
 ## Synchronized Methods
 
-## Implicit Locks and Synchronization
+## Intrinsic Locks and Synchronization
+Every **Object** has a lock within it. The mechanism of lock system is that,
+the lock is unique, so that only one thread can acquire it at one time. It's
+like a key to a door, and only one person can hold it.
+
+In addition to declare synchronized methods, we can also declare synchronized
+code blocks. The code block is like a method without declaration line. When we
+invoke an object's method, it's clearly we are asking the thread to take the
+object's intrinsic lock. With the synchronized code block, it's similar that we
+should give the block a lock. Usually, we can use `this` pointer to assign the
+current object's lock.
+```
+synchronized(this) {
+        // blahblah
+    }
+```
+However, in addition, sometimes we want to execute two blocks which are
+independent from each other. In that case, even the execution steps interleave,
+the blocks won't mess up each other. Using the current object's lock can only
+enable one block to execute since only one thread can hold the lock, but we are
+trying to make two blocks execute in concurrency. To solve this, we can give
+other object's lock to the code block. The other objects act as a flag variable.
+```
+    private Object lock1 = new Object();
+    private Object lock2 = new Object();
+
+    public void inc1() {
+        synchronized(lock1) {
+            // operations 
+        }
+    }
+
+    public void inc2() {
+        synchronized(lock2) {
+            // operations 
+        }
+    }
+```
+
+Another point is about _Reentrant Synchronization_. This basically means one
+thread can hold the object's lock for multiple times. It's like a person take
+the key for multiple times during his usage. This happens when a synchronized 
+method invokes another synchronized method. This makes sense since it's the same
+thread holding the same lock.
 
 ## Atomic Access
 
