@@ -91,3 +91,29 @@ thread holding the same lock.
 
 ## Atomic Access
 
+# Liveness
+A concurrent application's ability to execute in a timely manner is known as its
+liveness.
+## Deadlock
+Deadlock happens when two threads each hold the lock of one object. While the
+two threads are executing on a _synchronized_ methods, both of them want to call
+a _synchronized_ method in the other object. Rember that, when thread invokes a
+synchronized method, it has to acquire the object's lock. So, in this situation,
+thread A holds lock A, thread B holds lock B. Now, tA is waiting tB to release
+lock B, while possessing lock A. tB is waiting tA to release lock A while
+holding lock B. A deadlock happens.
+
+## Startvation and Livelock
+Starvation happens when one thread takes too much resource for a long period so
+that other threads don't have enough access to that resource.
+
+Livelock happens when two threads respond to each other heavily so that the
+system is busy switching between these two threads.
+
+# Guarded Block
+
+
+# Summary from exercise
+What will happen depends on happens-before relationship. It the relationship is
+not built, then the result is not guaranteed. The essence of happens-before
+relationship is about visibility, instead of sequence.
